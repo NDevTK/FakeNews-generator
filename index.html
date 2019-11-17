@@ -30,6 +30,10 @@ function cleanString(str) {
         .replace(/([\r\n]+ +)+/gm, '')
 	.replace('[...]', '')
 	.replace('[…]', '')
+	.replace(')', '')
+	.replace('(', '')
+	.replace('”', '')
+	.replace('“', '')
 	.replace(/^\s+|\s+$/g, '');
 }
 
