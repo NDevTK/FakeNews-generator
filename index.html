@@ -26,7 +26,7 @@ function cleanString(str) {
     return str.replace(/<style[^>]*>.*<\/style>/gm, '')
         .replace(/<[^>]+>/gm, '')
         .replace(/([\r\n]+ +)+/gm, '')
-		.replace('[...]', '');
+	.replace('[...]', '');
 }
 
 async function TrainMarkov(markov) {
