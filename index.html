@@ -29,7 +29,8 @@ function cleanString(str) {
         .replace(/<[^>]+>/gm, '')
         .replace(/([\r\n]+ +)+/gm, '')
 	.replace('[...]', '')
-	.replace('[…]', '');
+	.replace('[…]', '')
+	.replace(/^\s+|\s+$/g, '');
 }
 
 async function TrainMarkov(markov) {
