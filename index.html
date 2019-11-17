@@ -25,7 +25,8 @@ TrainMarkov(markov).then(_ => {
 function cleanString(str) {
     return str.replace(/<style[^>]*>.*<\/style>/gm, '')
         .replace(/<[^>]+>/gm, '')
-        .replace(/([\r\n]+ +)+/gm, '');
+        .replace(/([\r\n]+ +)+/gm, '')
+		.replace('[...]', '');
 }
 
 async function TrainMarkov(markov) {
