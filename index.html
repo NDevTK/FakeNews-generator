@@ -34,7 +34,9 @@ function cleanString(str) {
 	.replace('(', '')
 	.replace('”', '')
 	.replace('“', '')
-	.replace(/^\s+|\s+$/g, '');
+	.replace('“', '')
+	.replace(/^\s+|\s+$/g, '')
+	.replace("on News Punch.", "on Fake News");
 }
 
 async function TrainMarkov(markov) {
