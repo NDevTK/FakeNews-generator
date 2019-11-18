@@ -4,7 +4,7 @@ const train = 5;
 var markov = new Markov();
 function generate() {
     userInput.value = markov.generateRandom(max);
-    if(userInput.textLength < 15) generate()
+    if(userInput.textLength < 50) generate()
 }
 TrainMarkov(markov).then(_ => {
     generate();
@@ -27,6 +27,7 @@ function cleanString(str) {
 	.replace('“', '')
 	.replace('“', '')
 	.replace(/^\s+|\s+$/g, '')
+	.replace("The Babylon Bee", "The Fake News")
 	.replace("on News Punch.", "on Fake News");
 }
 
