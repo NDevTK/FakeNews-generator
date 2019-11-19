@@ -32,9 +32,9 @@ function cleanString(str) { // Input to user
 	.replace(".’", ".")
 	.replace('“', '')
 	.replace(/^\s+|\s+$/gm, '')
-	.replace("The Babylon Bee", "The Fake News")
-	.replace("on News Punch.", "on Fake News")
-	.replace("on Huzlers", "on Fake News");
+	.replace("The Babylon Bee", "Fake News")
+	.replace("on News Punch.", "Fake News")
+	.replace("on Huzlers", "Fake News");
 }
 
 async function TrainMarkov(markov) {
