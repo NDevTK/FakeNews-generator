@@ -32,6 +32,8 @@ function cleanString(str) { // Input to user
 	.replace(".’", ".")
 	.replace("’.", ".")
 	.replace('“', '')
+	.replace(",’", "")
+	.replace("’,", "")
 	.replace(/^,/gm, "")
 	.replace(/^‘/gm, "")
 	.replace(/^\s+|\s+$/gm, '')
