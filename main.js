@@ -2,31 +2,36 @@ const inspiration = "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2F
 const max = 1000;
 const train = 5;
 var markov = new Markov();
-function generate() {
-    userInput.value = markov.generateRandom(max);
+function generate() {	
+    userInput.value = cleanString(markov.generateRandom(max));
     if(userInput.textLength < 50) generate()
 }
 TrainMarkov(markov).then(_ => {
     generate();
 });
-function cleanString(str) {
+
+function removeHTML(str) { // Input to AI
     return str.replace(/<style[^>]*>.*<\/style>/gm, '')
         .replace(/<[^>]+>/gm, '')
         .replace(/([\r\n]+ +)+/gm, '')
 	.replace('[...]', '')
 	.replace('[…]', '')
-	.replace(')', '')
 	.replace('&amp;', '&')
 	.replace('&quot;', '"')
 	.replace('&apos;', "'")
 	.replace('&lt;', '<')
 	.replace('&gt;', '>')
 	.replace('&nbsp;', ' ')
+}
+
+function cleanString(str) { // Input to user
+    return str.replace(')', '')
 	.replace('(', '')
 	.replace('”', '')
 	.replace('“', '')
+	.replace(".’", ".")
 	.replace('“', '')
-	.replace(/^\s+|\s+$/g, '')
+	.replace(/^\s+|\s+$/gm, '')
 	.replace("The Babylon Bee", "The Fake News")
 	.replace("on News Punch.", "on Fake News");
 }
@@ -35,7 +40,7 @@ async function TrainMarkov(markov) {
     let result = await fetch(inspiration)
     json = await result.json();
     for (const item of json.items) {
-        markov.addStates(cleanString(item.description));
+        markov.addStates(removeHTML(item.description));
     }
     markov.train(train);
 }
