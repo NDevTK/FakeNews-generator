@@ -36,6 +36,8 @@ function cleanString(str) { // Input to user
 	.replace("’,", "")
 	.replace(/^,/gm, "")
 	.replace(/^‘/gm, "")
+	.replace("’.", "")
+	.replace("‘.","")
 	.replace(/^\s+|\s+$/gm, '')
 	.replace("Babylon Bee", "Fake News")
 	.replace("News Punch.", "Fake News")
