@@ -70,6 +70,7 @@ async function TrainMarkov(markov) {
     json = await result.json();
     for (const item of json.items) {
         markov.addStates(removeHTML(item.description));
+	markov.addStates(removeHTML(item.title));
     }
     markov.train(train);
 }
