@@ -2,10 +2,28 @@ const inspiration = "https://api.rss2json.com/v1/api.json?rss_url=https%3A%2F%2F
 const max = 2000;
 const train = 5;
 var markov = new Markov();
-function generate() {	
-    userInput.value = cleanString(markov.generateRandom(max));
-    if(userInput.textLength < 50) generate()
+
+async function checkGrammar(str = userInput.value) {
+    let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***&data=' + encodeURIComponent(str);
+    let r = await fetch('https://cors.ndev.tk/?url=' + encodeURIComponent(API));
+    let result = await r.text();
+    let count = result.split("<error>").length - 1;
+    return count;
 }
+
+function generate_once() {
+    userInput.value = cleanString(markov.generateRandom(max));
+}
+
+async function generate(minsize = 350, trys = 100) {
+    generate_once();
+    for (var i = 0; i <= trys; i++) {
+        let count = await getErrors();
+        if (count === 0 && userInput.textLength > 350) return;
+        generate_once();
+    }
+}
+
 TrainMarkov(markov).then(_ => {
     generate();
 });
