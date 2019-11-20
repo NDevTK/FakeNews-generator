@@ -18,7 +18,7 @@ function generate_once() {
 async function generate(minsize = 350, trys = 100) {
     generate_once();
     for (var i = 0; i <= trys; i++) {
-        let count = await getErrors();
+        let count = await checkGrammar();
         if (count === 0 && userInput.textLength > 350) return;
         generate_once();
     }
