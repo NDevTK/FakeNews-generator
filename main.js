@@ -18,6 +18,7 @@ function generate_once() {
 async function generate(minsize = 350, trys = 1000) {
     generate_once();
     for (var i = 0; i <= trys; i++) {
+	if(userInput.textLength < 350) continue
         let count = await checkGrammar();
         if (count === 0) return;
         generate_once();
@@ -69,9 +70,8 @@ function cleanString(str) { // Input to user
 async function TrainMarkov(markov) {
     let result = await fetch(inspiration)
     json = await result.json();
-    for (const item of json.rss.channel[0].item) {
+    for (let item of json.rss.channel[0].item) {
 	let input = removeHTML(item.description[0]);
-	if(input.length < 350) continue
         markov.addStates(removeHTML(item.description[0]));
     }
     markov.train(train);
