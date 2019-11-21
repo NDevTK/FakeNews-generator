@@ -26,11 +26,11 @@ function generate_once(m) {
     return cleanString(m.generateRandom(max));
 }
 
-async function generate(m, minsize = 350, trys = 500) {
+async function generate(m, minsize = 350, maxsize = 50000, trys = 500) {
 	var str;
     for (var i = 0; i <= trys; i++) {
 		str = generate_once(m);
-        if (str.length >= 350) {
+        if (str.length >= 350 && str.length < maxsize) {
             let count = await checkGrammar(str);
             if (count === 0) break;
         }  
@@ -38,7 +38,7 @@ async function generate(m, minsize = 350, trys = 500) {
 	return str;
 }
 
-async function makeContent() {
+async function makeContent(items = 10) {
 	var feed = new RSS({
 		title: 'Fake News',
 		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
@@ -47,9 +47,9 @@ async function makeContent() {
 		language: 'en'
 	});
 	await TrainMarkov(markov, markov2);
-	for (var i = 0; i <= 20; i++) {
-		title = await generate(markov, 5);
-		description = await generate(markov2);
+	for (var i = 0; i <= items; i++) {
+		title = await generate(markov2, 5, 70);
+		description = await generate(markov);
 		feed.item({
 			title: title,
 			description: description,
@@ -98,7 +98,7 @@ function cleanString(str) { // Input to user
 	.replace("Huzlers", "Fake News");
 }
 
-async function TrainMarkov(markov) {
+async function TrainMarkov(markov, markov2) {
     let result = await fetch(inspiration)
     json = await result.json();
     for (let item of json.rss.channel[0].item) {
@@ -108,13 +108,14 @@ async function TrainMarkov(markov) {
 		markov2.addStates(title);
     }
     markov.train(train);
-	markov2.train(train);
+	markov2.train();
 }
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Expose-Headers", "X-Final-URL");
     res.header('Cache-Control', 'public, smax-age=600, max-age=600');
+	res.header("Content-Type", "application/rss+xml");
     next();
 });
 
@@ -132,6 +133,13 @@ app.get('/rss', (req, res, next) => {
 		res.send(xml);
 	});
 });
+
+app.get('/rss2', (req, res, next) => {
+	makeContent(1).then(xml => {
+		res.send(xml);
+	});
+});
+
 
 app.get('/', (req, res, next) => {
 	res.send("Fake News RSS :D");
