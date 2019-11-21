@@ -48,7 +48,7 @@ async function generate(m, minsize = 350, trys = 500) {
 async function makeContent() {
 	await TrainMarkov(markov, markov2);
 	for (var i = 0; i <= 100; i++) {
-		title = await generate(markov);
+		title = await generate(markov, 5);
 		description = await generate(markov2);
 		feed.item({
 			title: title,
@@ -105,10 +105,10 @@ async function TrainMarkov(markov) {
 	let description = removeHTML(item.description[0]);
 	let title = removeHTML(item.title[0]);
         markov.addStates(description);
-		markov2.addStates(title);
+	markov2.addStates(title);
     }
     markov.train(train);
-	markov2.train(train);
+    markov2.train(train);
 }
 
 app.use(function(req, res, next) {
