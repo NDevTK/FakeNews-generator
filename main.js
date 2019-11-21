@@ -70,8 +70,8 @@ async function TrainMarkov(markov) {
     let result = await fetch(inspiration)
     json = await result.json();
     for (const item of json.rss.channel[0].item) {
-        markov.addStates(removeHTML(item.description));
-	markov.addStates(removeHTML(item.title));
+        markov.addStates(removeHTML(item.description[0]));
+	markov.addStates(removeHTML(item.title[0]));
     }
     markov.train(train);
 }
