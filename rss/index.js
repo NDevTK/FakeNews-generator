@@ -6,14 +6,6 @@ const Markov = require('js-markov');
 const fetch = require('node-fetch');
 const PORT = process.env.PORT || 5000;
 
-var feed = new RSS({
-    title: 'Fake News',
-    description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-    feed_url: 'https://fakenews-rss.ndev.tk',
-    site_url: 'https://news.ndev.tk',
-    language: 'en'
-});
-
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
 const train = 5;
@@ -46,6 +38,13 @@ async function generate(m, minsize = 350, trys = 500) {
 }
 
 async function makeContent() {
+	var feed = new RSS({
+		title: 'Fake News',
+		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
+		feed_url: 'https://fakenews-rss.ndev.tk',
+		site_url: 'https://news.ndev.tk',
+		language: 'en'
+	});
 	await TrainMarkov(markov, markov2);
 	for (var i = 0; i <= 20; i++) {
 		title = await generate(markov, 5);
