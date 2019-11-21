@@ -29,9 +29,9 @@ const feedConfig = {
 
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Expose-Headers", "X-Final-URL");
-    res.header('Cache-Control', 'public, smax-age=600, max-age=600');
-    next();
+	res.header("Content-Type", "application/rss+xml");
+	res.header('Cache-Control', 'public, smax-age=600, max-age=600');
+	next();
 });
 
 app.get('/rss/json', (req, res, next) => {
