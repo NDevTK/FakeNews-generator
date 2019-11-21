@@ -15,12 +15,13 @@ function generate_once() {
     userInput.value = cleanString(markov.generateRandom(max));
 }
 
-async function generate(minsize = 350, trys = 1000) {
+async function generate(minsize = 350, trys = 500) {
     generate_once();
     for (var i = 0; i <= trys; i++) {
-	if(userInput.textLength < 350) continue
-        let count = await checkGrammar();
-        if (count === 0) return;
+        if (userInput.textLength >= 350) {
+            let count = await checkGrammar();
+            if (count === 0) return;
+        }
         generate_once();
     }
 }
@@ -72,7 +73,9 @@ async function TrainMarkov(markov) {
     json = await result.json();
     for (let item of json.rss.channel[0].item) {
 	let description = removeHTML(item.description[0]);
+	let title = removeHTML(item.title[0]);
         markov.addStates(description);
+	markov.addStates(title);
     }
     markov.train(train);
 }
