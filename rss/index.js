@@ -42,9 +42,10 @@ async function makeContent(items = 10) {
 	var feed = new RSS({
 		title: 'Fake News',
 		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-		feed_url: 'https://fakenews-rss.ndev.tk',
+		feed_url: 'https://fakenews-rss.herokuapp.com/rss',
 		site_url: 'https://news.ndev.tk',
-		language: 'en'
+		language: 'en',
+		ttl: '5'
 	});
 	await TrainMarkov(markov, markov2);
 	for (var i = 0; i <= items; i++) {
