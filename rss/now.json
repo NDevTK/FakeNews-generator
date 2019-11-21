@@ -1,0 +1,10 @@
+{
+    "version": 2,
+    "name": "FakeNews-RSS",
+    "builds": [
+        { "src": "index.js", "use": "@now/node" }
+    ],
+	"routes": [
+        { "src": "/(.*)", "dest": "/" }
+	]
+}
