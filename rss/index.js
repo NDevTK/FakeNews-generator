@@ -38,11 +38,11 @@ async function generate(m, minsize = 350, maxsize = 50000, trys = 500) {
 	return str;
 }
 
-async function makeContent(items = 10) {
+async function makeContent(items = 10, end = "rss") {
 	var feed = new RSS({
 		title: 'Fake News',
 		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-		feed_url: 'https://fakenews-rss.herokuapp.com/rss',
+		feed_url: 'https://fakenews-rss.herokuapp.com/'+end,
 		site_url: 'https://news.ndev.tk',
 		language: 'en',
 		ttl: '5'
@@ -122,21 +122,21 @@ app.use(function(req, res, next) {
 
 app.get('/rss/json', (req, res, next) => {
 	let parser = xml2js.Parser();
-	makeContent().then(xml => {
+	makeContent("rss/json").then(xml => {
 		parser.parseString(xml, (err, result) => {
 		  res.send(result);
 		});
 	});
 });
 
-app.get('/rss', (req, res, next) => {
+app.get('rss', (req, res, next) => {
 	makeContent().then(xml => {
 		res.send(xml);
 	});
 });
 
-app.get('/rss2', (req, res, next) => {
-	makeContent(1).then(xml => {
+app.get('rss2', (req, res, next) => {
+	makeContent(1, "rss2").then(xml => {
 		res.send(xml);
 	});
 });
