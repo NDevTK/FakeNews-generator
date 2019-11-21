@@ -129,13 +129,13 @@ app.get('/rss/json', (req, res, next) => {
 	});
 });
 
-app.get('rss', (req, res, next) => {
+app.get('/rss', (req, res, next) => {
 	makeContent().then(xml => {
 		res.send(xml);
 	});
 });
 
-app.get('rss2', (req, res, next) => {
+app.get('/rss2', (req, res, next) => {
 	makeContent(1, "rss2").then(xml => {
 		res.send(xml);
 	});
