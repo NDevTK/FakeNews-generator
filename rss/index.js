@@ -1,10 +1,10 @@
 const express = require('express');
 const app = express();
 const uuidv4 = require('uuid/v4');
-const xml2js = require('xml2js');
 var RSS = require('rss');
 const Markov = require('js-markov');
 const fetch = require('node-fetch');
+const PORT = process.env.PORT || 5000;
 
 var feed = new RSS({
     title: 'Fake News',
@@ -47,7 +47,7 @@ async function generate(m, minsize = 350, trys = 500) {
 
 async function makeContent() {
 	await TrainMarkov(markov, markov2);
-	for (var i = 0; i <= 100; i++) {
+	for (var i = 0; i <= 20; i++) {
 		title = await generate(markov, 5);
 		description = await generate(markov2);
 		feed.item({
@@ -105,10 +105,10 @@ async function TrainMarkov(markov) {
 	let description = removeHTML(item.description[0]);
 	let title = removeHTML(item.title[0]);
         markov.addStates(description);
-	markov2.addStates(title);
+		markov2.addStates(title);
     }
     markov.train(train);
-    markov2.train(train);
+	markov2.train(train);
 }
 
 app.use(function(req, res, next) {
@@ -128,7 +128,7 @@ app.get('/rss/json', (req, res, next) => {
 
 app.get('/rss', (req, res, next) => {
 	makeContent().then(xml => {
-		res.send(xml);		
+		res.send(xml);
 	});
 });
 
@@ -136,4 +136,4 @@ app.get('/', (req, res, next) => {
 	res.send("Fake News RSS :D");
 });
 
-module.exports = app;
+app.listen(PORT);
