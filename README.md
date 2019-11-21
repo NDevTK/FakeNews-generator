@@ -1,6 +1,6 @@
 # FakeNews-generator
 Using AI with multiple RSS feeds for inspiration  
-Fake News Soruce RSS => g2reader (aggregator) <=> rss2json.com <=> Browser => js-markov
+Fake News Soruce RSS => (aggregator) <=> rss2json.com <=> Browser => js-markov
 
 Credits:  
 https://github.com/Edwin-Pratt/js-markov  
