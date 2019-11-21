@@ -5,6 +5,7 @@ var RSS = require('rss');
 const Markov = require('js-markov');
 const fetch = require('node-fetch');
 const PORT = process.env.PORT || 5000;
+const xml2js = require('xml2js');
 
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
@@ -118,6 +119,7 @@ app.use(function(req, res, next) {
 });
 
 app.get('/rss/json', (req, res, next) => {
+	let parser = xml2js.Parser();
 	makeContent().then(xml => {
 		parser.parseString(xml, (err, result) => {
 		  res.send(result);
