@@ -1,3 +1,3 @@
 # FakeNews-generator RSS
-GET https://fakenews-rss.herokuapp.com/rss  
-GET https://fakenews-rss.herokuapp.com/rss/json
+GET https://rss.***REMOVED***.workers.dev/rss  
+GET https://rss.***REMOVED***.workers.dev/rss/json
