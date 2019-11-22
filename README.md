@@ -6,4 +6,4 @@ Credits:
 https://github.com/Edwin-Pratt/js-markov  
 https://rss2json.com/  
 https://zeit.co/
-https://heroku.com
+https://workers.cloudflare.com/
