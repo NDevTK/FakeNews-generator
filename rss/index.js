@@ -12,7 +12,7 @@ var markov2 = new Markov();
 var feed = new RSS({
     title: 'Fake News',
     description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-    feed_url: 'https://fakenews-rss.herokuapp.com/rss',
+    feed_url: 'https://ndev.tk/rss',
     site_url: 'https://news.ndev.tk',
     language: 'en',
     ttl: '10'
@@ -20,7 +20,7 @@ var feed = new RSS({
 
 async function makeContent(items = 10) {
     let result = await TrainMarkov(markov, markov2);
-	if(!result) return
+    if (!result) return
     for (var i = 0; i <= items; i++) {
         title = await generate(markov2, 5, 70);
         description = await generate(markov);
@@ -37,8 +37,8 @@ async function makeContent(items = 10) {
 async function checkGrammar(str = userInput.value) {
     let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***rss&data=' + encodeURIComponent(str);
     let r = await fetch('https://cors.ndev.tk/?url=' + encodeURIComponent(API));
-	if (r.status >= 400 && r.status < 600) {
-      return 0;
+    if (r.status >= 400 && r.status < 600) {
+        return 0;
     }
     let result = await r.text();
     let count = result.split("<error>").length - 1;
@@ -101,8 +101,8 @@ function cleanString(str) { // Input to user
 
 async function TrainMarkov(markov, markov2) {
     let r = await fetch(inspiration);
-	if (r.status >= 400 && r.status < 600) {
-      return false;
+    if (r.status >= 400 && r.status < 600) {
+        return false;
     }
     json = await r.json();
     for (let item of json.rss.channel[0].item) {
@@ -132,17 +132,17 @@ async function Send(content, type = "application/rss+xml", errorCode = 404) {
 }
 
 async function URLSwitch(request) {
-	var xml;
-	var requestURL = new URL(request.url);
+    var xml;
+    var requestURL = new URL(request.url);
     switch (requestURL.pathname) {
         case "/rss":
             xml = await makeContent();
-	    if(!xml) return Send("", "text/plain", 502);
+            if (!xml) return Send("", "text/plain", 502);
             return Send(xml);
         case "/rss/json":
             xml = await makeContent();
-	    if(!xml) return Send("", "text/plain", 502);
-	    let parser = xml2js.Parser();
+            if (!xml) return Send("", "text/plain", 502);
+            let parser = xml2js.Parser();
             parser.parseString(xml, (err, result) => {
                 return Send(result, "application/json");
             });
@@ -151,20 +151,20 @@ async function URLSwitch(request) {
             return Send("FakeNews RSS", "text/plain");
             break
     }
-	return Send("");
+    return Send("");
 }
 
 async function handleRequest(event) {
     let cache = caches.default
-	let request = event.request;
+    let request = event.request;
     let response = await cache.match(request)
-        
+
     if (!response) {
-      response = await URLSwitch(request);
-      event.waitUntil(cache.put(request, response))
+        response = await URLSwitch(request);
+        if (response.status === 200) event.waitUntil(cache.put(request, response))
     }
-    
-    return  response
+
+    return response
 }
 
 addEventListener('fetch', async event => {
