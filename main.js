@@ -15,7 +15,7 @@ async function reader() {
     await generate();
     let text = new SpeechSynthesisUtterance(userInput.value);
     speechSynthesis.speak(text);
-    text.onend = () => Reader();
+    text.onend = () => reader();
 }
 
 function generate_once() {
