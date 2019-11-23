@@ -19,7 +19,7 @@ async function THENEWS() {
     bg = new Audio("https://news.ndev.tk/bg.mp3");
     bg.loop = true;
     bg.play();
-    sleep(5000);
+    await sleep(5000);
     reader();
 }
 
