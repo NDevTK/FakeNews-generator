@@ -19,7 +19,8 @@ var feed = new RSS({
 });
 
 async function makeContent(items = 10) {
-    await TrainMarkov(markov, markov2);
+    let result = await TrainMarkov(markov, markov2);
+	if(!result) return
     for (var i = 0; i <= items; i++) {
         title = await generate(markov2, 5, 70);
         description = await generate(markov);
@@ -36,6 +37,9 @@ async function makeContent(items = 10) {
 async function checkGrammar(str = userInput.value) {
     let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***rss&data=' + encodeURIComponent(str);
     let r = await fetch('https://cors.ndev.tk/?url=' + encodeURIComponent(API));
+	if (r.status >= 400 && r.status < 600) {
+      return 0;
+    }
     let result = await r.text();
     let count = result.split("<error>").length - 1;
     return count;
@@ -96,8 +100,11 @@ function cleanString(str) { // Input to user
 }
 
 async function TrainMarkov(markov, markov2) {
-    let result = await fetch(inspiration);
-    json = await result.json();
+    let r = await fetch(inspiration);
+	if (r.status >= 400 && r.status < 600) {
+      return false;
+    }
+    json = await r.json();
     for (let item of json.rss.channel[0].item) {
         let description = removeHTML(item.description[0]);
         let title = removeHTML(item.title[0]);
@@ -106,10 +113,11 @@ async function TrainMarkov(markov, markov2) {
     }
     markov.train(train);
     markov2.train();
+    return true;
 }
 
-async function Send(content, type = "application/rss+xml") {
-    let statusCode = (content.length === 0) ? 404 : 200;
+async function Send(content, type = "application/rss+xml", errorCode = 404) {
+    let statusCode = (content.length === 0) ? errorCode : 200;
     if (statusCode === 404) {
         content = "RSS 404";
         type = "text/plain";
@@ -129,16 +137,18 @@ async function URLSwitch(request) {
     switch (requestURL.pathname) {
         case "/rss":
             xml = await makeContent();
+	    if(!xml) return Send("", "text/plain", 502);
             return Send(xml);
         case "/rss/json":
-            let parser = xml2js.Parser();
             xml = await makeContent();
+	    if(!xml) return Send("", "text/plain", 502);
+	    let parser = xml2js.Parser();
             parser.parseString(xml, (err, result) => {
                 return Send(result, "application/json");
             });
             break
         case "/":
-            return Send("FakeNews RSS");
+            return Send("FakeNews RSS", "text/plain");
             break
     }
 	return Send("");
