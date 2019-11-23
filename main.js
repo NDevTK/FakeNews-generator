@@ -11,6 +11,13 @@ async function checkGrammar(str = userInput.value) {
     return count;
 }
 
+async function reader() {
+    await generate();
+    let text = new SpeechSynthesisUtterance(userInput.value);
+    speechSynthesis.speak(text);
+    text.onend = () => Reader();
+}
+
 function generate_once() {
     userInput.value = cleanString(markov.generateRandom(max));
 }
