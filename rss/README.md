@@ -1,3 +1,3 @@
 # FakeNews-generator RSS
-GET https://rss.***REMOVED***.workers.dev/rss  
-GET https://rss.***REMOVED***.workers.dev/rss/json
+GET https://ndev.tk/rss
+GET https://ndev.tk/rss/json
