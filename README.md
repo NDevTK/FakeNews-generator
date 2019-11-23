@@ -7,3 +7,11 @@ https://github.com/Edwin-Pratt/js-markov
 https://rss2json.com/  
 https://zeit.co/
 https://workers.cloudflare.com/
+
+# News Background Music
+Music Credit: OurMusicBox (Jay Man)  
+Track Name: "The Headlines"  
+Music By: Jay Man @ https://ourmusicbox.com/  
+Official "OurMusicBox" YouTube Channel: http://www.youtube.com/c/ourmusicbox  
+License for commercial use: Creative Commons Attribution 4.0 International (CC BY 4.0) https://creativecommons.org/licenses/...  
+Music promoted by NCM https://goo.gl/fh3rEJ
