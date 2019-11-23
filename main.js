@@ -20,6 +20,7 @@ async function THENEWS() {
     bg.loop = true;
     bg.play();
     sleep(5000);
+    reader();
 }
 
 async function reader() {
