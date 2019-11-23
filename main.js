@@ -21,6 +21,7 @@ async function THENEWS() {
     bg.play();
     await sleep(5000);
     reader();
+    bg.volume = 0.3;
 }
 
 async function reader() {
