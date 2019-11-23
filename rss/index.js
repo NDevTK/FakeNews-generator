@@ -18,13 +18,6 @@ var feed = new RSS({
     ttl: '10'
 });
 
-async function reader() {
-await generate();
-let text = new SpeechSynthesisUtterance(userInput.value);
-speechSynthesis.speak(text);
-text.onend = () => Reader();
-}
-
 async function makeContent(items = 10) {
     let result = await TrainMarkov(markov, markov2);
     if (!result) return
