@@ -126,7 +126,6 @@ async function Send(content, type = "application/rss+xml", errorCode = 404) {
         status: statusCode
     });
     Res.headers.set('Access-Control-Allow-Origin', '*');
-    Res.headers.set('Cache-Control', 'public, smax-age=540, max-age=600');
     Res.headers.set('Content-Type', type + ';charset=UTF-8');
     return Res;
 }
@@ -161,7 +160,7 @@ async function handleRequest(event) {
 
     if (!response) {
         response = await URLSwitch(request);
-        if (response.status === 200) event.waitUntil(cache.put(request, response))
+        if (response.status === 200) event.waitUntil(cache.put(request, response.clone()))
     }
 
     return response
