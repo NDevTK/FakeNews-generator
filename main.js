@@ -11,6 +11,16 @@ async function checkGrammar(str = userInput.value) {
     return count;
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function THENEWS() {
+    bg = new Audio("https://news.ndev.tk/bg.mp3");
+    bg.play();
+    sleep(5000);
+}
+
 async function reader() {
     await generate();
     let text = new SpeechSynthesisUtterance(userInput.value);
