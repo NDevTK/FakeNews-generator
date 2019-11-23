@@ -10,27 +10,27 @@ var markov = new Markov();
 var markov2 = new Markov();
 
 var feed = new RSS({
-	title: 'Fake News',
-	description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-	feed_url: 'https://fakenews-rss.herokuapp.com/rss',
-	site_url: 'https://news.ndev.tk',
-	language: 'en',
-	ttl: '10'
+    title: 'Fake News',
+    description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
+    feed_url: 'https://fakenews-rss.herokuapp.com/rss',
+    site_url: 'https://news.ndev.tk',
+    language: 'en',
+    ttl: '10'
 });
 
 async function makeContent(items = 10) {
-	await TrainMarkov(markov, markov2);
-	for (var i = 0; i <= items; i++) {
-		title = await generate(markov2, 5, 70);
-		description = await generate(markov);
-		feed.item({
-			title: title,
-			description: description,
-			guid: uuidv4(),
-			url: "https://news.ndev.tk/"
-		});
+    await TrainMarkov(markov, markov2);
+    for (var i = 0; i <= items; i++) {
+        title = await generate(markov2, 5, 70);
+        description = await generate(markov);
+        feed.item({
+            title: title,
+            description: description,
+            guid: uuidv4(),
+            url: "https://news.ndev.tk/"
+        });
     }
-	return feed.xml();
+    return feed.xml();
 }
 
 async function checkGrammar(str = userInput.value) {
@@ -46,103 +46,117 @@ function generate_once(m) {
 }
 
 async function generate(m, minsize = 350, maxsize = 50000, trys = 500) {
-	var str;
+    var str;
     for (var i = 0; i <= trys; i++) {
-		str = generate_once(m);
+        str = generate_once(m);
         if (str.length >= 350 && str.length < maxsize) {
             let count = await checkGrammar(str);
             if (count === 0) break;
-        }  
+        }
     }
-	return str;
+    return str;
 }
 
 function removeHTML(str) { // Input to AI
     return str.replace(/<style[^>]*>.*<\/style>/gm, '')
-    .replace(/<[^>]+>/gm, '')
-    .replace(/([\r\n]+ +)+/gm, '')
-	.replace('[...]', '')
-	.replace('[…]', '')
-	.replace('&amp;', '&')
-	.replace('&quot;', '"')
-	.replace('&apos;', "'")
-	.replace('&lt;', '<')
-	.replace('&gt;', '>')
-	.replace('&nbsp;', ' ')
+        .replace(/<[^>]+>/gm, '')
+        .replace(/([\r\n]+ +)+/gm, '')
+        .replace('[...]', '')
+        .replace('[…]', '')
+        .replace('&amp;', '&')
+        .replace('&quot;', '"')
+        .replace('&apos;', "'")
+        .replace('&lt;', '<')
+        .replace('&gt;', '>')
+        .replace('&nbsp;', ' ')
 }
 
 function cleanString(str) { // Input to user
     return str.replace(')', '')
-	.replace('(', '')
-	.replace('”', '')
-	.replace('“', '')
-	.replace(".’", ".")
-	.replace("’.", ".")
-	.replace('“', '')
-	.replace(",’", "")
-	.replace("’,", ",")
-	.replace(/^,/gm, "")
-	.replace(/^‘/gm, "")
-	.replace("’.", "")
-	.replace('."', '. "')
-	.replace("‘.","")
-	.replace("/^\s*‘/gm", "")
-	.replace("”,", ",")
-	.replace("“,", ",")
-	.replace(/^\s+|\s+$/gm, '')
-	.replace("Babylon Bee", "Fake News")
-	.replace("News Punch.", "Fake News")
-	.replace("Huzlers", "Fake News");
+        .replace('(', '')
+        .replace('”', '')
+        .replace('“', '')
+        .replace(".’", ".")
+        .replace("’.", ".")
+        .replace('“', '')
+        .replace(",’", "")
+        .replace("’,", ",")
+        .replace(/^,/gm, "")
+        .replace(/^‘/gm, "")
+        .replace("’.", "")
+        .replace('."', '. "')
+        .replace("‘.", "")
+        .replace("/^\s*‘/gm", "")
+        .replace("”,", ",")
+        .replace("“,", ",")
+        .replace(/^\s+|\s+$/gm, '')
+        .replace("Babylon Bee", "Fake News")
+        .replace("News Punch.", "Fake News")
+        .replace("Huzlers", "Fake News");
 }
 
 async function TrainMarkov(markov, markov2) {
     let result = await fetch(inspiration);
     json = await result.json();
     for (let item of json.rss.channel[0].item) {
-	let description = removeHTML(item.description[0]);
-	let title = removeHTML(item.title[0]);
+        let description = removeHTML(item.description[0]);
+        let title = removeHTML(item.title[0]);
         markov.addStates(description);
-		markov2.addStates(title);
+        markov2.addStates(title);
     }
     markov.train(train);
-	markov2.train();
+    markov2.train();
 }
 
 async function Send(content, type = "application/rss+xml") {
-  let statusCode = (content.length === 0) ? 404 : 200;
-  if(statusCode === 404) {
-	  content = "RSS 404";
-	  type = "text/plain";
-  }
-  let Res = new Response(content, {status: statusCode});
-  Res.headers.set('Access-Control-Allow-Origin', '*');
-  Res.headers.set('Cache-Control', 'public, smax-age=540, max-age=600');
-  if(rss) Res.headers.set('Content-Type', type+';charset=UTF-8');
-  return Res;
+    let statusCode = (content.length === 0) ? 404 : 200;
+    if (statusCode === 404) {
+        content = "RSS 404";
+        type = "text/plain";
+    }
+    let Res = new Response(content, {
+        status: statusCode
+    });
+    Res.headers.set('Access-Control-Allow-Origin', '*');
+    Res.headers.set('Cache-Control', 'public, smax-age=540, max-age=600');
+    Res.headers.set('Content-Type', type + ';charset=UTF-8');
+    return Res;
 }
 
-async function handleRequest(request) {
-  var xml;
-  let requestURL = new URL(request.url)
-  switch(requestURL.pathname) {
-	case "/rss":
-		xml = await makeContent();
-		return Send(xml)
-		break
-	case "/rss/json":
-		let parser = xml2js.Parser();
-		xml = await makeContent();
-		parser.parseString(xml, (err, result) => {
-			return Send(result, "application/json");
-		});
-		break
-	case "/":
-		return Send("FakeNews RSS");
-		break
-	}
-	return Send();
+async function URLSwitch(request) {
+	var xml;
+	var requestURL = new URL(request.url);
+    switch (requestURL.pathname) {
+        case "/rss":
+            xml = await makeContent();
+            return Send(xml);
+        case "/rss/json":
+            let parser = xml2js.Parser();
+            xml = await makeContent();
+            parser.parseString(xml, (err, result) => {
+                return Send(result, "application/json");
+            });
+            break
+        case "/":
+            return Send("FakeNews RSS");
+            break
+    }
+	return Send("");
+}
+
+async function handleRequest(event) {
+    let cache = caches.default
+	let request = event.request;
+    let response = await cache.match(request)
+        
+    if (!response) {
+      response = await URLSwitch(request);
+      event.waitUntil(cache.put(request, response))
+    }
+    
+    return  response
 }
 
 addEventListener('fetch', async event => {
-  event.respondWith(handleRequest(event.request))
+    event.respondWith(handleRequest(event))
 })
