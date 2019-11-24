@@ -34,10 +34,10 @@ async function THENEWS() {
     voice = voices[getRandom(voices.length)];
     bg.loop = true;
     bg.play();
-    thenews.innerText = "Stop Audio";
     await sleep(5000);
     bg.volume = 0.3;
     reader();
+    thenews.innerText = "Stop Audio";
 }
 
 async function reader() {
