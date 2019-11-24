@@ -29,7 +29,6 @@ async function THENEWS() {
     thenews.innerText = "THE NEWS!";
     return
     }
-    thenews.innerText = "Stop Audio";
     if (!window.hasOwnProperty("bg")) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
@@ -38,6 +37,7 @@ async function THENEWS() {
     bg.loop = true;
     bg.volume = 1;
     bg.play();
+    thenews.innerText = "Stop Audio";
     TheNewsIntro = sleep(5000);
     await TheNewsIntro
     bg.volume = 0.3;
