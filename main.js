@@ -23,7 +23,6 @@ async function THENEWS() {
     if(window.hasOwnProperty("bg") && !bg.paused) {
     bg.pause();
     delete TheNewsIntro;
-    text.onend = () => {};
     speechSynthesis.cancel();
     bg.currentTime = 0;
     thenews.innerText = "THE NEWS!";
