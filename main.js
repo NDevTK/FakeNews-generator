@@ -48,6 +48,7 @@ async function reader() {
     await generate();
     text = new SpeechSynthesisUtterance(userInput.value);
     text.voice = voice;
+    text.onerror = () => reader();
     text.onend = () => reader();
     speechSynthesis.speak(text);
 }
