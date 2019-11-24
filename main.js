@@ -20,13 +20,16 @@ function getRandom(max) {
 }
 
 async function THENEWS() {
-    if(speechSynthesis.speaking) {
+    if(window.hasOwnProperty("bg") && !bg.paused) {
     bg.pause();
+    delete TheNewsIntro;
+    text.onend = () => {};
     SpeechSynthesis.cancel();
     bg.currentTime = 0;
     thenews.innerText = "THE NEWS!";
     return
     }
+    thenews.innerText = "Stop Audio";
     if (!window.hasOwnProperty("bg")) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
@@ -35,15 +38,15 @@ async function THENEWS() {
     bg.loop = true;
     bg.volume = 1;
     bg.play();
-    await sleep(5000);
+    TheNewsIntro = sleep(5000);
+    await TheNewsIntro
     bg.volume = 0.3;
     reader();
-    thenews.innerText = "Stop Audio";
 }
 
 async function reader() {
     await generate();
-    let text = new SpeechSynthesisUtterance(userInput.value);
+    text = new SpeechSynthesisUtterance(userInput.value);
     text.voice = voice;
     speechSynthesis.speak(text);
     text.onend = () => reader();
