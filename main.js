@@ -20,13 +20,20 @@ function getRandom(max) {
 }
 
 async function THENEWS() {
-    bg = new Audio("https://news.ndev.tk/bg.mp3");
+    if(speechSynthesis.speaking) {
+    bg.pause();
+    SpeechSynthesis.cancel();
+    bg.currentTime = 0;
+    thenews.innerText = "THE NEWS!";
+    }
+    (window.hasOwnProperty(bg)) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
     });
     voice = voices[getRandom(voices.length)];
     bg.loop = true;
     bg.play();
+    thenews.innerText = "Stop Audio";
     await sleep(5000);
     bg.volume = 0.3;
     reader();
