@@ -48,8 +48,8 @@ async function reader() {
     await generate();
     text = new SpeechSynthesisUtterance(userInput.value);
     text.voice = voice;
-    speechSynthesis.speak(text);
     text.onend = () => reader();
+    speechSynthesis.speak(text);
 }
 
 function generate_once() {
