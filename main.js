@@ -24,7 +24,7 @@ async function THENEWS() {
     bg.pause();
     delete TheNewsIntro;
     text.onend = () => {};
-    SpeechSynthesis.cancel();
+    speechSynthesis.cancel();
     bg.currentTime = 0;
     thenews.innerText = "THE NEWS!";
     return
