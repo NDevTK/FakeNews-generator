@@ -15,18 +15,27 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function getRandom(max) {
+    return Math.floor((Math.random() * 10) % max)
+}
+
 async function THENEWS() {
     bg = new Audio("https://news.ndev.tk/bg.mp3");
+    voices = window.speechSynthesis.getVoices().filter(voice => {
+	return voice.lang.startsWith("en-");
+    });
+    voice = voices[getRandom(voices.length)];
     bg.loop = true;
     bg.play();
     await sleep(5000);
-    reader();
     bg.volume = 0.3;
+    reader();
 }
 
 async function reader() {
     await generate();
     let text = new SpeechSynthesisUtterance(userInput.value);
+    text.voice = voice;
     speechSynthesis.speak(text);
     text.onend = () => reader();
 }
