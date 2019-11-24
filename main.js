@@ -26,7 +26,7 @@ async function THENEWS() {
     bg.currentTime = 0;
     thenews.innerText = "THE NEWS!";
     }
-    (window.hasOwnProperty(bg)) bg = new Audio("https://news.ndev.tk/bg.mp3");
+    (!window.hasOwnProperty(bg)) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
     });
