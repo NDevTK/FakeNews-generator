@@ -69,6 +69,7 @@ async function generate(minsize = 350, trys = 500) {
 
 TrainMarkov(markov).then(_ => {
     thenews.disabled = false;
+    random.disabled = false;
     generate();
 });
 
