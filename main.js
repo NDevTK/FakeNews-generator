@@ -33,6 +33,7 @@ async function THENEWS() {
     });
     voice = voices[getRandom(voices.length)];
     bg.loop = true;
+    bg.volume = 1;
     bg.play();
     await sleep(5000);
     bg.volume = 0.3;
