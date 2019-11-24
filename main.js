@@ -93,6 +93,7 @@ function cleanString(str) { // Input to user
 	.replace('(', '')
 	.replace('”', '')
 	.replace('“', '')
+	.replace("’ ", " ")
 	.replace(".’", ".")
 	.replace("’.", ".")
 	.replace('“', '')
