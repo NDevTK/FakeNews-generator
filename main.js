@@ -32,7 +32,7 @@ async function THENEWS() {
     TTSKeepAlive = setInterval(_ => {
     speechSynthesis.pause();
     speechSynthesis.resume();
-    }, 10000);
+    }, 5000);
     if (!window.hasOwnProperty("bg")) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
