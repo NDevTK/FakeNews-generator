@@ -68,7 +68,11 @@ async function generate(minsize = 350, trys = 500) {
     }
 }
 
-TrainMarkov(markov).then(_ => {
+tryTrainMarkov(markov).then(state => {
+    if(!state) {
+    userInput.value = "API ERROR! please reload page";
+    return
+    }
     thenews.disabled = false;
     random.disabled = false;
     generate();
@@ -113,9 +117,21 @@ function cleanString(str) { // Input to user
 	.replace("Huzlers", "Fake News");
 }
 
+async function tryTrainMarkov(markov, trys = 10) {
+    for (var i = 0; i <= trys; i++) {
+        let state = await TrainMarkov(markov);
+        if(state) return true;
+	await sleep(1000);
+    }
+    return false;
+}
+
 async function TrainMarkov(markov) {
-    let result = await fetch(inspiration)
-    json = await result.json();
+    let r = await fetch(inspiration);
+    if (r.status >= 400 && r.status < 600) {
+        return false;
+    }
+    json = await r.json();
     for (let item of json.rss.channel[0].item) {
 	let description = removeHTML(item.description[0]);
 	let title = removeHTML(item.title[0]);
@@ -123,4 +139,5 @@ async function TrainMarkov(markov) {
 	markov.addStates(title);
     }
     markov.train(train);
+    return true
 }
