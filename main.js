@@ -21,6 +21,7 @@ function getRandom(max) {
 
 async function THENEWS() {
     if(window.hasOwnProperty("bg") && !bg.paused) {
+    clearInterval(TTSKeepAlive);
     bg.pause();
     delete TheNewsIntro;
     speechSynthesis.cancel();
@@ -28,6 +29,10 @@ async function THENEWS() {
     thenews.innerText = "THE NEWS!";
     return
     }
+    TTSKeepAlive = setInterval(_ => {
+    speechSynthesis.pause();
+    speechSynthesis.resume();
+    }, 10000);
     if (!window.hasOwnProperty("bg")) bg = new Audio("https://news.ndev.tk/bg.mp3");
     voices = window.speechSynthesis.getVoices().filter(voice => {
 	return voice.lang.startsWith("en-");
@@ -97,7 +102,6 @@ function cleanString(str) { // Input to user
 	.replace('(', '')
 	.replace('”', '')
 	.replace('“', '')
-	.replace("’ ", " ")
 	.replace(".’", ".")
 	.replace("’.", ".")
 	.replace('“', '')
