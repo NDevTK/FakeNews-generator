@@ -42,7 +42,7 @@ async function THENEWS() {
     bg.volume = 1;
     bg.play();
     thenews.innerText = "Stop Audio";
-    TheNewsIntro = sleep(5000);
+    TheNewsIntro = sleep(6000);
     await TheNewsIntro
     bg.volume = 0.3;
     reader();
