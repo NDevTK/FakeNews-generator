@@ -157,8 +157,9 @@ async function handleRequest(event) {
     let cache = caches.default
     let request = event.request;
     let response = await cache.match(request)
-
-    if (!response) {
+	let CronJob = (request.headers.get('CronJob') === 'N/A');
+    
+    if (!response || CronJob) {
         response = await URLSwitch(request);
         if (response.status === 200) event.waitUntil(cache.put(request, response.clone()))
     }
