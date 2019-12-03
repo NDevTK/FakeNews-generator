@@ -5,7 +5,6 @@ RSS Feed: https://rss.ndev.tk
 JSON Feed: https://rss.ndev.tk/json (CORS Allowed)  
 Credits:  
 https://github.com/Edwin-Pratt/js-markov  
-https://rss2json.com/  
 https://zeit.co/  
 https://cloudno.de/
 
