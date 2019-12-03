@@ -1,6 +1,10 @@
+const express = require('express');
+const app = express();
 const uuidv4 = require('uuid/v4');
+const fetch = require('node-fetch');
 var RSS = require('rss');
 const Markov = require('js-markov');
+var schedule = require('node-schedule');
 const xml2js = require('xml2js');
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
@@ -9,17 +13,26 @@ const train = 5;
 var markov = new Markov();
 var markov2 = new Markov();
 
-var feed = new RSS({
-    title: 'Fake News',
-    description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-    feed_url: 'https://ndev.tk/rss',
-    site_url: 'https://news.ndev.tk',
-    language: 'en',
-    ttl: '10'
-});
+ContentUpdater();
+
+async function ContentUpdater() {
+	xml = await makeContent();
+	var content = schedule.scheduleJob('10 * * * *', async () => {
+		xml = await makeContent();
+	});
+}
+
 
 async function makeContent(items = 10) {
     let result = await TrainMarkov(markov, markov2);
+	var feed = new RSS({
+		title: 'Fake News',
+		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
+		feed_url: 'https://rss.ndev.tk',
+		site_url: 'https://news.ndev.tk',
+		language: 'en',
+		ttl: '10'
+	});
     if (!result) return
     for (var i = 0; i <= items; i++) {
         title = await generate(markov2, 5, 70);
@@ -116,57 +129,23 @@ async function TrainMarkov(markov, markov2) {
     return true;
 }
 
-async function Send(content, type = "application/rss+xml", errorCode = 404) {
-    let statusCode = (content.length === 0) ? errorCode : 200;
-    if (statusCode === 404) {
-        content = "RSS 404";
-        type = "text/plain";
-    }
-    let Res = new Response(content, {
-        status: statusCode
-    });
-    Res.headers.set('Access-Control-Allow-Origin', '*');
-    Res.headers.set('Content-Type', type + ';charset=UTF-8');
-    return Res;
-}
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Content-Type", "application/rss+xml");
+    next();
+});
 
-async function URLSwitch(request) {
-    var xml;
-    var requestURL = new URL(request.url);
-    switch (requestURL.pathname) {
-        case "/rss":
-            xml = await makeContent();
-            if (!xml) return Send("", "text/plain", 502);
-            return Send(xml);
-        case "/rss/json":
-            xml = await makeContent();
-            if (!xml) return Send("", "text/plain", 502);
+app.get('/json', async(req, res, next) => {
+            if (!xml) return res.status(504).send("REMOTE ERROR");
             let parser = xml2js.Parser();
             parser.parseString(xml, (err, result) => {
-                return Send(result, "application/json");
+                res.send(result);
             });
-            break
-        case "/":
-            return Send("FakeNews RSS", "text/plain");
-            break
-    }
-    return Send("");
-}
+});
 
-async function handleRequest(event) {
-    let cache = caches.default
-    let request = event.request;
-    let response = await cache.match(request)
-	let CronJob = (request.headers.get('CronJob') === 'N/A');
-    
-    if (!response || CronJob) {
-        response = await URLSwitch(request);
-        if (response.status === 200) event.waitUntil(cache.put(request, response.clone()))
-    }
+app.get('/', async(req, res, next) => {
+        if (!xml) return res.status(504).send("REMOTE ERROR");
+		res.send(xml);
+});
 
-    return response
-}
-
-addEventListener('fetch', async event => {
-    event.respondWith(handleRequest(event))
-})
+app.listen(15208);
