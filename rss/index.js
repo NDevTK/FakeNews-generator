@@ -13,6 +13,7 @@ const train = 5;
 var markov = new Markov();
 var markov2 = new Markov();
 
+seen = true;
 ContentUpdater();
 
 async function ContentUpdater() {
@@ -20,10 +21,14 @@ async function ContentUpdater() {
 	var content = schedule.scheduleJob('10 * * * *', async () => {
 		xml = await makeContent();
 	});
+	var contentOutdated = schedule.scheduleJob('50 * * * *', async () => {
+		seen = true;
+	});
 }
 
 
 async function makeContent(items = 10) {
+	if(!seen) return xml;
     let result = await TrainMarkov(markov, markov2);
 	var feed = new RSS({
 		title: 'Fake News',
@@ -44,6 +49,7 @@ async function makeContent(items = 10) {
             url: "https://news.ndev.tk/"
         });
     }
+	seen = false;
     return feed.xml();
 }
 
@@ -132,20 +138,22 @@ async function TrainMarkov(markov, markov2) {
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Content-Type", "application/rss+xml");
-    next();
+	next();
 });
 
 app.get('/json', async(req, res, next) => {
-            if (!xml) return res.status(504).send("REMOTE ERROR");
-            let parser = xml2js.Parser();
-            parser.parseString(xml, (err, result) => {
-                res.send(result);
-            });
+	seen = true;
+	if (!xml) return res.status(504).send("REMOTE ERROR");
+	let parser = xml2js.Parser();
+	parser.parseString(xml, (err, result) => {
+		res.send(result);
+	});
 });
 
 app.get('/', async(req, res, next) => {
+	seen = true;
         if (!xml) return res.status(504).send("REMOTE ERROR");
-		res.send(xml);
+	res.send(xml);
 });
 
 app.listen(15208);
