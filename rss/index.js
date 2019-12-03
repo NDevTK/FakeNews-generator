@@ -36,7 +36,7 @@ async function makeContent(items = 10) {
 		feed_url: 'https://rss.ndev.tk',
 		site_url: 'https://news.ndev.tk',
 		language: 'en',
-		ttl: '10'
+		ttl: '60'
 	});
     if (!result) return
     for (var i = 0; i <= items; i++) {
