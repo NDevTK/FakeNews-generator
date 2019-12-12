@@ -9,7 +9,6 @@ const feedConfig = {
   softFail: true,
   size: 400,
   feeds: [
-	"https://www.burrardstreetjournal.com/feed/",
 	"https://www.clickhole.com/rss",
 	"http://www.fakingnews.com/feed/",
 	"https://www.huzlers.com/feed/",
