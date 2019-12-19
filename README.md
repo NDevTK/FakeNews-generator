@@ -1,6 +1,7 @@
 # FakeNews-generator
 Using AI with multiple RSS feeds for inspiration  
 Fake News Soruce RSS => aggregator <=> Browser => js-markov  
+Discord: https://discord.gg/YFkmVZX
 RSS Feed: https://rss.ndev.tk  
 JSON Feed: https://rss.ndev.tk/json (CORS Allowed)  
 Status: https://statuspage.freshping.io/20006-NDev  
