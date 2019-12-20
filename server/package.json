@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,6 +14,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "rss-combiner": "0.0.5",
-    "xml2js": "^0.4.22"
+    "xml2js": "^0.4.23"
   }
 }
