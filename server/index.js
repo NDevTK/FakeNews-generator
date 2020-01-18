@@ -10,15 +10,12 @@ const feedConfig = {
   size: 400,
   feeds: [
 	"https://www.clickhole.com/rss",
-	"http://www.fakingnews.com/feed/",
 	"https://www.huzlers.com/feed/",
 	"http://nationalreport.net/feed/",
 	"https://newspunch.com/feed/",
-	"http://www.newsbiscuit.com/feed/",
 	"https://now8news.com/feed/",
 	"https://babylonbee.com/feed",
 	"https://www.thebeaverton.com/feed/",
-	"https://bizstandardnews.com/feed/",
 	"https://www.theonion.com/rss",
 	"https://worldnewsdailyreport.com/feed/",
 	"https://worldtruth.tv/feed/"
