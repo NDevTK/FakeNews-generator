@@ -19,7 +19,11 @@ ContentUpdater();
 async function ContentUpdater() {
 	xml = await makeContent();
 	var content = schedule.scheduleJob('10 * * * *', async () => {
-		xml = await makeContent();
+		try {
+			xml = await makeContent();
+		} catch(error) {
+			console.error("Content error");
+		}
 	});
 	var contentOutdated = schedule.scheduleJob('50 * * * *', async () => {
 		seen = true;
