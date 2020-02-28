@@ -10,7 +10,6 @@ const feedConfig = {
   size: 400,
   feeds: [
 	"https://www.clickhole.com/rss",
-	"https://www.huzlers.com/feed/",
 	"http://nationalreport.net/feed/",
 	"https://newspunch.com/feed/",
 	"https://now8news.com/feed/",
