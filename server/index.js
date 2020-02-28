@@ -7,7 +7,7 @@ const xml2js = require('xml2js');
 const feedConfig = {
   title: 'Fake News',
   softFail: true,
-  size: 400,
+  size: 2000,
   feeds: [
 	"https://www.clickhole.com/rss",
 	"http://nationalreport.net/feed/",
