@@ -9,6 +9,11 @@ const feedConfig = {
   softFail: true,
   size: 2000,
   feeds: [
+    "https://weeklyworldnews.com/feed/",
+    "https://www.thepoke.co.uk/feed/",
+    "https://newsthump.com/feed/",
+    "https://waterfordwhispersnews.com/feed/",
+    "http://www.thecivilian.co.nz/feed/",
 	"https://www.clickhole.com/rss",
 	"http://nationalreport.net/feed/",
 	"https://newspunch.com/feed/",
