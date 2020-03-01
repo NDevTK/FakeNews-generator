@@ -1,6 +1,5 @@
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
-const train = 5;
 var markov = new Markov();
 
 async function checkGrammar(str = userInput.value) {
@@ -138,10 +137,8 @@ async function TrainMarkov(markov) {
     json = await r.json();
     for (let item of json.rss.channel[0].item) {
 	let description = removeHTML(item.description[0]);
-	let title = removeHTML(item.title[0]);
         markov.addStates(description);
-	markov.addStates(title);
     }
-    markov.train(train);
+    markov.train();
     return true
 }
