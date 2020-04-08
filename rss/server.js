@@ -59,7 +59,7 @@ async function makeContent(items = 10) {
 
 async function checkGrammar(str = userInput.value) {
     let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***rss&data=' + encodeURIComponent(str);
-    let r = await fetch('https://cors.ndev.tk/?url=' + encodeURIComponent(API));
+    let r = await fetch('https://cors.usercontent.ndev.tk/?url=' + encodeURIComponent(API));
     if (r.status >= 400 && r.status < 600) {
         return 0;
     }
