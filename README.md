@@ -2,7 +2,7 @@
 Using AI with multiple RSS feeds for inspiration  
 Fake News Soruce RSS => aggregator <=> Browser => js-markov  
 Discord: https://discord.gg/YFkmVZX
-RSS Feed: https://rss.ondev.tk  
+RSS Feed: https://rss.ndev.tk  
 JSON Feed: https://rss.ndev.tk/json (CORS Allowed)  
 Credits:  
 https://github.com/Edwin-Pratt/js-markov  
