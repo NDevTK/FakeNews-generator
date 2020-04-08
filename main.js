@@ -3,7 +3,7 @@ const max = 2000;
 var markov = new Markov();
 
 async function checkGrammar(str = userInput.value) {
-    let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***&data=' + encodeURIComponent(str);
+    let API = 'https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(str);
     let r = await fetch('https://cors.usercontent.ndev.tk/?url=' + encodeURIComponent(API));
     let result = await r.text();
     let count = result.split("<error>").length - 1;
