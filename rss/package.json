@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js"
   },
-  "author": "***REMOVED***",
+  "author": "ndev",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1",
