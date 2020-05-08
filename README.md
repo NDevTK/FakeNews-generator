@@ -1,5 +1,5 @@
 # FakeNews-generator
-Using AI with multiple RSS feeds for inspiration  
+Using a Markov chain and RSS feeds for inspiration
 Fake News Soruce RSS => aggregator <=> Browser => js-markov  
 Discord: https://discord.gg/YFkmVZX
 RSS Feed: https://fakenewsrss.cloudno.de/  
