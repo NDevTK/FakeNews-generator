@@ -5,14 +5,14 @@ var RSS = require('rss');
 const Markov = require('js-markov');
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
-const train = 5;
+const train = 10;
 
 var markov = new Markov();
 var markov2 = new Markov();
 
 makeContent();
 
-async function makeContent(items = 20) {
+async function makeContent(items = 10) {
     let result = await TrainMarkov(markov, markov2);
     var feed = new RSS({
 	    title: 'Fake News',
