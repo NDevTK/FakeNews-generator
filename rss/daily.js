@@ -10,6 +10,8 @@ const train = 5;
 var markov = new Markov();
 var markov2 = new Markov();
 
+makeContent();
+
 async function makeContent(items = 50) {
     let result = await TrainMarkov(markov, markov2);
     var feed = new RSS({
