@@ -1,5 +1,6 @@
 const uuidv4 = require('uuid/v4');
 const fetch = require('node-fetch');
+const fs = require('fs');
 var RSS = require('rss');
 const Markov = require('js-markov');
 const xml2js = require('xml2js');
