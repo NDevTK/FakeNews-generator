@@ -105,12 +105,14 @@ async function TrainMarkov(markov, markov2) {
         return false;
     }
     json = await r.json();
+    var titles = [];
+    var descriptions = [];
     for (let item of json.rss.channel[0].item) {
-        let description = removeHTML(item.description[0]);
-        let title = removeHTML(item.title[0]);
-        markov.addStates(description);
-        markov2.addStates(title);
+        descriptions.push(removeHTML(item.description[0]));
+        titles.push(removeHTML(item.title[0]));
     }
+    markov.addStates(descriptions);
+    markov2.addStates(titles);
     markov.train();
     markov2.train();
     return true;
