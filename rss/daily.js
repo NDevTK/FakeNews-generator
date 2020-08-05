@@ -35,8 +35,8 @@ async function makeContent(items = 10) {
     fs.writeFileSync('rss/index.html', feed.xml());
 }
 
-async function checkGrammar(str = userInput.value) {
-    let r = await fetch('https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(API));
+async function checkGrammar(str) {
+    let r = await fetch('https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(str));
     if (r.status >= 400 && r.status < 600) {
         return 0;
     }
