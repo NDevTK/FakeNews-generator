@@ -7,7 +7,6 @@ JSON Feed: https://fakenewsrss.cloudno.de/json (CORS Allowed)
 Credits:  
 https://github.com/Edwin-Pratt/js-markov  
 https://zeit.co/  
-https://cloudno.de/
 
 # News Background Music
 Music Credit: OurMusicBox (Jay Man)  
