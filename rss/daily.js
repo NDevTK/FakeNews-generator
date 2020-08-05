@@ -37,8 +37,7 @@ async function makeContent(items = 500) {
 }
 
 async function checkGrammar(str = userInput.value) {
-    let API = 'https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(str);
-    let r = await fetch('https://cors.usercontent.ndev.tk/?url=' + encodeURIComponent(API));
+    let r = await fetch('https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(API));
     if (r.status >= 400 && r.status < 600) {
         return 0;
     }
