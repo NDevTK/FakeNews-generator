@@ -5,7 +5,6 @@ var RSS = require('rss');
 const Markov = require('js-markov');
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
-const train = 10;
 
 var markov = new Markov();
 var markov2 = new Markov();
@@ -112,7 +111,7 @@ async function TrainMarkov(markov, markov2) {
         markov.addStates(description);
         markov2.addStates(title);
     }
-    markov.train(train);
-    markov2.train(train);
+    markov.train();
+    markov2.train();
     return true;
 }
