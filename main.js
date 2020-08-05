@@ -135,10 +135,12 @@ async function TrainMarkov(markov) {
         return false;
     }
     json = await r.json();
+    var data = [];
     for (let item of json.rss.channel[0].item) {
-	let description = removeHTML(item.description[0]);
+	data.push(item.description[0]);
         markov.addStates(description);
     }
+    markov.addStates(data);
     markov.train();
     return true
 }
