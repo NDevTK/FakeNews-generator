@@ -1,10 +1,7 @@
-const express = require('express');
-const app = express();
 const uuidv4 = require('uuid/v4');
 const fetch = require('node-fetch');
 var RSS = require('rss');
 const Markov = require('js-markov');
-var schedule = require('node-schedule');
 const xml2js = require('xml2js');
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
@@ -13,39 +10,20 @@ const train = 5;
 var markov = new Markov();
 var markov2 = new Markov();
 
-seen = true;
-ContentUpdater();
-
-async function ContentUpdater() {
-	xml = await makeContent();
-	var content = schedule.scheduleJob('10 * * * *', async () => {
-		try {
-			xml = await makeContent();
-		} catch(error) {
-			console.error("Content error");
-		}
-	});
-	var contentOutdated = schedule.scheduleJob('50 * * * *', async () => {
-		seen = true;
-	});
-}
-
-
-async function makeContent(items = 10) {
-	if(!seen) return xml;
+async function makeContent(items = 50) {
     let result = await TrainMarkov(markov, markov2);
-	var feed = new RSS({
-		title: 'Fake News',
-		description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
-		feed_url: 'https://rss.ndev.tk',
-		site_url: 'https://news.ndev.tk',
-		language: 'en',
-		ttl: '60'
-	});
+    var feed = new RSS({
+	    title: 'Fake News',
+	    description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
+	    feed_url: 'https://news.ndev.tk/rss',
+	    site_url: 'https://news.ndev.tk',
+	    language: 'en',
+	    ttl: '60'
+    });
     if (!result) return
     for (var i = 0; i <= items; i++) {
-        title = await generate(markov2, 5, 70);
-        description = await generate(markov);
+        let title = await generate(markov2, 5, 70);
+        let description = await generate(markov);
         feed.item({
             title: title,
             description: description,
@@ -53,12 +31,11 @@ async function makeContent(items = 10) {
             url: "https://news.ndev.tk/"
         });
     }
-	seen = false;
-    return feed.xml();
+    fs.writeFileSync('rss', feed.xml());
 }
 
 async function checkGrammar(str = userInput.value) {
-    let API = 'https://service.afterthedeadline.com/checkGrammar?key=***REMOVED***rss&data=' + encodeURIComponent(str);
+    let API = 'https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(str);
     let r = await fetch('https://cors.usercontent.ndev.tk/?url=' + encodeURIComponent(API));
     if (r.status >= 400 && r.status < 600) {
         return 0;
@@ -138,26 +115,3 @@ async function TrainMarkov(markov, markov2) {
     markov2.train();
     return true;
 }
-
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Content-Type", "application/rss+xml");
-	next();
-});
-
-app.get('/json', async(req, res, next) => {
-	seen = true;
-	if (!xml) return res.status(504).send("REMOTE ERROR");
-	let parser = xml2js.Parser();
-	parser.parseString(xml, (err, result) => {
-		res.send(result);
-	});
-});
-
-app.get('/', async(req, res, next) => {
-	seen = true;
-        if (!xml) return res.status(504).send("REMOTE ERROR");
-	res.send(xml);
-});
-
-app.listen(15208);
