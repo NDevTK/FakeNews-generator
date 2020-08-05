@@ -27,7 +27,7 @@ jobs:
     - name: Getting Stuff
       run: npm install js-markov xml2js rss node-fetch
     - name: daily
-      run: node daily.js
+      run: node rss/daily.js
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
