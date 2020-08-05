@@ -2,8 +2,7 @@
 Using a Markov chain with RSS feeds for inspiration  
 Fake News Soruce RSS => aggregator <=> Browser => js-markov  
 Discord: https://discord.gg/YFkmVZX
-RSS Feed: https://fakenewsrss.cloudno.de/  
-JSON Feed: https://fakenewsrss.cloudno.de/json (CORS Allowed)  
+RSS Feed: https://news.ndev.tk/rss 
 Credits:  
 https://github.com/Edwin-Pratt/js-markov  
 https://zeit.co/  
