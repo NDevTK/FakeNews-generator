@@ -12,7 +12,7 @@ var markov2 = new Markov();
 
 makeContent();
 
-async function makeContent(items = 500) {
+async function makeContent(items = 20) {
     let result = await TrainMarkov(markov, markov2);
     var feed = new RSS({
 	    title: 'Fake News',
