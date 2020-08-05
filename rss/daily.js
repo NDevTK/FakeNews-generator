@@ -3,7 +3,6 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 var RSS = require('rss');
 const Markov = require('js-markov');
-const xml2js = require('xml2js');
 const inspiration = "https://aihelper.ndev.tk/rss/json";
 const max = 2000;
 const train = 5;
@@ -34,7 +33,7 @@ async function makeContent(items = 50) {
             url: "https://news.ndev.tk/"
         });
     }
-    fs.writeFileSync('rss', feed.xml());
+    fs.writeFileSync('rss/index.html', feed.xml());
 }
 
 async function checkGrammar(str = userInput.value) {
@@ -115,6 +114,6 @@ async function TrainMarkov(markov, markov2) {
         markov2.addStates(title);
     }
     markov.train(train);
-    markov2.train();
+    markov2.train(train);
     return true;
 }
