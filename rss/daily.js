@@ -3,7 +3,6 @@ const fetch = require('node-fetch');
 const fs = require('fs');
 var RSS = require('rss');
 const Markov = require('js-markov');
-const inspiration = "https://news.ndev.tk/inspiration";
 const max = 2000;
 
 var markov = new Markov();
@@ -100,7 +99,7 @@ function cleanString(str) { // Input to user
 }
 
 async function TrainMarkov(markov, markov2) {
-    let r = await fetch(inspiration);
+    let r = fs.readFileSync("inspiration/index.html");
     if (r.status >= 400 && r.status < 600) {
         return false;
     }
