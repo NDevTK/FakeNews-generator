@@ -138,7 +138,7 @@ async function TrainMarkov(markov) {
     var data = [];
     for (let feed of json) {
         for (let item of feed.items) {
-	        data.push(item.content);
+	        data.push(removeHTML(item.content));
         }
     }
     markov.addStates(data);
