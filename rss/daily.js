@@ -40,7 +40,7 @@ async function fakeNews(input) {
     const spliter = "\n\n\n\n";
     var output = "";
     for (feed of input) {
-	shuffle(feed);
+	shuffle(feed.items);
         for (var item of feed.items) {
             output += item.title + "\n" + item.content + spliter;
         }
