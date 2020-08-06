@@ -136,8 +136,10 @@ async function TrainMarkov(markov) {
     }
     json = await r.json();
     var data = [];
-    for (let item of json.rss.channel[0].item) {
-	data.push(item.description[0]);
+    for (let feed of json) {
+        for (let item of feed.items) {
+	        data.push(item.content);
+        }
     }
     markov.addStates(data);
     markov.train();
