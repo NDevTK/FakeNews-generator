@@ -25,9 +25,11 @@ jobs:
     - uses: actions/setup-node@v1
     # Runs a single command using the runners shell
     - name: Getting Stuff
-      run: npm install js-markov rss node-fetch rss-parser
+      run: npm install rss node-fetch rss-parser deepai
     - name: rss
       run: node rss/daily.js
+      env:
+        DEEPAI: ${{ secrets.DEEPAI }}
     - name: Commit changes
       run: |
         git config --local user.email "action@github.com"
