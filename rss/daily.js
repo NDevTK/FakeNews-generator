@@ -32,7 +32,7 @@ async function makeContent() {
 }
 
 async function fakeNews(input) {
-    const spliter = "*****";
+    const spliter = "\n\n\n\n";
     var output = "";
     for (feed of input) {
         for (var item of feed.items) {
