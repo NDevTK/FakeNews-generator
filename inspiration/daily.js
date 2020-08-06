@@ -51,6 +51,7 @@ const feedConfig = {
     pubDate: new Date()
 };
 
+createFile();
 async function createFile() {
     var output = [];
     await PromiseForeach(feeds, async url => {
