@@ -25,7 +25,7 @@ jobs:
     - uses: actions/setup-node@v1
     # Runs a single command using the runners shell
     - name: Getting Stuff
-      run: npm install js-markov rss node-fetch rss-combiner xml2js
+      run: npm install js-markov rss node-fetch rss-parser
     - name: inspiration
       run: node inspiration/daily.js
     - name: rss
