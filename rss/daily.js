@@ -16,7 +16,7 @@ async function makeContent() {
 	    language: 'en',
 	    ttl: '60'
     });
-    var input = await fetch("https://aihelper.ndev.tk/rss").json();
+    var input = async () => await (await fetch('https://aihelper.ndev.tk/rss')).json();
     var output = await fakeNews(input);
     output.length = 15;
     for (var item of output) {
