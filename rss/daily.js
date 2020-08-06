@@ -2,16 +2,12 @@ const uuidv4 = require('uuid/v4');
 const fetch = require('node-fetch');
 const fs = require('fs');
 var RSS = require('rss');
-const Markov = require('js-markov');
-const max = 2000;
-
-var markov = new Markov();
-var markov2 = new Markov();
+const deepai = require('deepai');
+deepai.setApiKey(process.env.DEEPAI);
 
 makeContent();
 
-async function makeContent(items = 10) {
-    let result = await TrainMarkov(markov, markov2);
+async function makeContent() {
     var feed = new RSS({
 	    title: 'Fake News',
 	    description: 'Using AI with multiple RSS feeds for inspiration to create fake news :D',
@@ -20,44 +16,32 @@ async function makeContent(items = 10) {
 	    language: 'en',
 	    ttl: '60'
     });
-    if (!result) return
-    for (var i = 0; i <= items; i++) {
-        let title = await generate(markov2, 5, 70);
-        let description = await generate(markov);
-        feed.item({
-            title: title,
-            description: description,
+    var input = await fetch("https://aihelper.ndev.tk/rss").json();
+    var output = await fakeNews(input);
+    output.length = 15;
+    for (var item of output) {
+	  feed.item({
+            title: item.split("\n")[0],
+            description: item.substr(item.indexOf('\n')+1),
             guid: uuidv4(),
             url: "https://news.ndev.tk/"
-        });
+	  });
     }
     fs.writeFileSync('rss/index.html', feed.xml());
 }
 
-async function checkGrammar(str) {
-    let r = await fetch('https://service.afterthedeadline.com/checkGrammar?key=ndevtk&data=' + encodeURIComponent(str));
-    if (r.status >= 400 && r.status < 600) {
-        return 0;
-    }
-    let result = await r.text();
-    let count = result.split("<error>").length - 1;
-    return count;
-}
-
-function generate_once(m) {
-    return cleanString(m.generateRandom(max));
-}
-
-async function generate(m, minsize = 350, maxsize = 50000, trys = 500) {
-    var str;
-    for (var i = 0; i <= trys; i++) {
-        str = generate_once(m);
-        if (str.length >= 350 && str.length < maxsize) {
-            let count = await checkGrammar(str);
-            if (count === 0) break;
+async function fakeNews(input) {
+    const spliter = "*****";
+    var output = "";
+    for (feed of input) {
+        for (var item of feed.items) {
+            output += item.title + "\n" + item.content + spliter;
         }
     }
-    return str;
+    output = removeHTML(output);
+    output = await GPT2(output);
+    output = output.replace("<|endoftext|>", "");
+    return output.split(spliter);
 }
 
 function removeHTML(str) { // Input to AI
@@ -72,49 +56,12 @@ function removeHTML(str) { // Input to AI
         .replace('&lt;', '<')
         .replace('&gt;', '>')
         .replace('&nbsp;', ' ')
+	.replace('')
 }
 
-function cleanString(str) { // Input to user
-    return str.replace(')', '')
-        .replace('(', '')
-        .replace('”', '')
-        .replace('“', '')
-        .replace(".’", ".")
-        .replace("’.", ".")
-        .replace('“', '')
-        .replace(",’", "")
-        .replace("’,", ",")
-        .replace(/^,/gm, "")
-        .replace(/^‘/gm, "")
-        .replace("’.", "")
-        .replace('."', '. "')
-        .replace("‘.", "")
-        .replace("/^\s*‘/gm", "")
-        .replace("”,", ",")
-        .replace("“,", ",")
-        .replace(/^\s+|\s+$/gm, '')
-        .replace("Babylon Bee", "Fake News")
-        .replace("News Punch.", "Fake News")
-        .replace("Huzlers", "Fake News");
-}
-
-async function TrainMarkov(markov, markov2) {
-    let r = await fetch("https://aihelper.ndev.tk/rss");
-    if (r.status >= 400 && r.status < 600) {
-        return false;
-    }
-    json = await r.json();
-    var titles = [];
-    var descriptions = [];
-    for (let feed of json) {
-        for (let item of feed.items) {
-		descriptions.push(removeHTML(item.content));
-		titles.push(removeHTML(item.title));
-        }
-    }
-    markov.addStates(descriptions);
-    markov2.addStates(titles);
-    markov.train();
-    markov2.train();
-    return true;
+async function GPT2(text) {
+    var result = await deepai.callStandardApi("text-generator", {
+        text: text
+    });
+    return result;
 }
