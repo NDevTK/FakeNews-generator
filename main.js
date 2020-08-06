@@ -1,4 +1,4 @@
-const inspiration = "https://aihelper.ndev.tk/rss/json";
+const inspiration = "https://news.ndev.tk/inspiration";
 const max = 2000;
 var markov = new Markov();
 
