@@ -31,10 +31,16 @@ async function makeContent() {
     fs.writeFileSync('rss/index.html', feed.xml());
 }
 
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+}
+
 async function fakeNews(input) {
+    input = shuffle(input);
     const spliter = "\n\n\n\n";
     var output = "";
     for (feed of input) {
+	feed = shuffle(feed);
         for (var item of feed.items) {
             output += item.title + "\n" + item.content + spliter;
         }
