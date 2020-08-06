@@ -28,14 +28,20 @@ jobs:
       run: npm install js-markov rss node-fetch rss-combiner xml2js
     - name: inspiration
       run: node inspiration/daily.js
-    - name: rss
-      run: node rss/daily.js
-    - name: Commit files
+    - name: Commit inspiration
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Daily changes [Auto]" -a
+        git commit -m "Daily inspiration [Auto]" -a
+    - name: rss
+      run: node rss/daily.js
+    - name: Commit rss
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Daily rss [Auto]" -a
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
