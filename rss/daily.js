@@ -36,11 +36,11 @@ function shuffle(array) {
 }
 
 async function fakeNews(input) {
-    input = shuffle(input);
+    shuffle(input);
     const spliter = "\n\n\n\n";
     var output = "";
     for (feed of input) {
-	feed = shuffle(feed);
+	shuffle(feed);
         for (var item of feed.items) {
             output += item.title + "\n" + item.content + spliter;
         }
