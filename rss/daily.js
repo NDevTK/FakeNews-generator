@@ -106,9 +106,11 @@ async function TrainMarkov(markov, markov2) {
     json = await r.json();
     var titles = [];
     var descriptions = [];
-    for (let item of json.rss.channel[0].item) {
-        descriptions.push(removeHTML(item.description[0]));
-        titles.push(removeHTML(item.title[0]));
+    for (let feed of json) {
+        for (let item of feed.items) {
+		descriptions.push(removeHTML(item.content));
+		titles.push(removeHTML(item.title));
+        }
     }
     markov.addStates(descriptions);
     markov2.addStates(titles);
