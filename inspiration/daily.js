@@ -1,5 +1,7 @@
 let Parser = require('rss-parser');
-let parser = new Parser();
+let parser = new Parser({
+  timeout: 300000,
+});
 
 const feeds = [
     "https://weeklyworldnews.com/feed/",
