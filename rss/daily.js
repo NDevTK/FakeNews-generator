@@ -64,5 +64,5 @@ async function GPT2(text) {
     var result = await deepai.callStandardApi("text-generator", {
         text: text
     });
-    return result;
+    return result.output;
 }
