@@ -26,8 +26,6 @@ jobs:
     # Runs a single command using the runners shell
     - name: Getting Stuff
       run: npm install js-markov rss node-fetch rss-parser
-    - name: inspiration
-      run: node inspiration/daily.js
     - name: rss
       run: node rss/daily.js
     - name: Commit changes
