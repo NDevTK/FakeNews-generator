@@ -99,7 +99,7 @@ function cleanString(str) { // Input to user
 }
 
 async function TrainMarkov(markov, markov2) {
-    let r = fs.readFileSync("inspiration/index.html");
+    let r = await fetch("https://aihelper.ndev.tk/rss");
     if (r.status >= 400 && r.status < 600) {
         return false;
     }
