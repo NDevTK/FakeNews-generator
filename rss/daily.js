@@ -41,7 +41,7 @@ async function fakeNews(input) {
     }
     output = removeHTML(output);
     output = await GPT2(output);
-    output = output.replace("<|endoftext|>", "").replace("Read more »", "").replace("undefined", "");
+    output = output.replace("<|endoftext|>", "").replace("Read more", "").replace("undefined", "").replace("»","");
     return output.split(spliter);
 }
 
