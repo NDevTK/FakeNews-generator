@@ -58,7 +58,7 @@ async function createFile() {
         let feed = await parser.parseURL(url);
         output.push(feed);
     });
-    fs.writeFileSync('inspiration/index.html', result);
+    fs.writeFileSync('inspiration/index.html', output);
 }
 
 async function PromiseForeach(item, callback) {
