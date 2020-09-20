@@ -1,3 +1,6 @@
+# New version (Forked from someone else):
+https://github.com/NDevTK/newsgen
+
 # FakeNews-generator
 Using a Markov chain with RSS feeds for inspiration  
 Fake News Soruce RSS => aggregator <=> Browser => js-markov  
